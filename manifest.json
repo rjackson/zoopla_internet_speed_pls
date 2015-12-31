@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "Zoopla Internet Estimates",
+  "description": "Adds estimated internet speed to Zoopla listings",
+  "version": "1.0",
+
+  "permissions": [
+    "storage",
+    "https://maps.googleapis.com/", // Google Places API
+    "http://www.rightmove.co.uk/",   // Broadband speed API
+    "http://www.zoopla.co.uk/",
+    "https://www.zoopla.co.uk/"
+  ],
+
+  "options_page": "options.html",
+
+  "content_scripts": [
+    {
+      "run_at": "document_end",
+      "matches": ["*://www.zoopla.co.uk/*"],
+      "js": [
+        "node_modules/axios/dist/axios.js",
+        "src/classes/Listing.js",
+        "src/classes/PostcodeResolver.js",
+        "src/main.js"
+      ]
+    }
+  ]
+}
