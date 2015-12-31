@@ -24,8 +24,10 @@
         "src/classes/providers/PostcodeResolvers/GooglePlacesQueryAutocomplete.js",
         "src/classes/providers/PostcodeResolvers/GooglePlacesTextSearch.js",
         "src/classes/providers/PostcodeResolvers/ProviderAggregator.js",
+        "src/classes/providers/SpeedResolvers/Rightmove.js",
         "src/classes/Listing.js",
         "src/classes/PostcodeResolver.js",
+        "src/classes/SpeedResolver.js",
         "src/main.js"
       ]
     }

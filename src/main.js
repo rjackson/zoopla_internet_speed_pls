@@ -15,6 +15,10 @@ function IMUSTADDINTERNETSPEEDSTOZOOPLALISTINGS () {
         ])
     );
 
+    var speedResolver = new SpeedResolver(
+        new Rightmove()
+    );
+
      // Get all listings in DOM
      var listingElems = document.querySelectorAll(
           '*[itemtype="http://schema.org/Residence"]'
@@ -28,7 +32,7 @@ function IMUSTADDINTERNETSPEEDSTOZOOPLALISTINGS () {
      // Cast NodeArray to regular array of Listing objects, because that class
      // has all my fancy logic in it.
      var listings = Array.prototype.slice.call(listingElems).map(function(elem) {
-          return new Listing(elem, postcodeResolver);
+          return new Listing(elem, postcodeResolver, speedResolver);
      });
 
     // Expose the estimated

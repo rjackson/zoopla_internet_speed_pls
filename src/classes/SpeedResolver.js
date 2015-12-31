@@ -1,10 +1,10 @@
 'use strict';
 
-class PostcodeResolver {
+class SpeedResolver {
     constructor(provider, cacheProvider) {
         this.provider = provider;
         this.cache = cacheProvider || localStorage;
-        this.cache_key_prefix = 'Zoopla__PostcodeResolver__';
+        this.cache_key_prefix = 'Zoopla__SpeedResolver__';
     }
 
     /**
@@ -15,31 +15,31 @@ class PostcodeResolver {
      * @param  String address A full or partial address
      * @return Promise        The promise to provide a postcode! Or die trying.
      */
-    getFromPartialAddress(partialAddress) {
-        var cache_key = this.cache_key_prefix + partialAddress;
+    getFromPostcode(postcode) {
+        var cache_key = this.cache_key_prefix + postcode;
 
         var self = this;
         return new Promise(function(resolve, reject) {
 
             // Fetch cached respnose
-            var cachedPostcode = JSON.parse(self.cache.getItem(cache_key))
-            if (cachedPostcode !== null) {
+            var cachedSpeed = JSON.parse(self.cache.getItem(cache_key))
+            if (cachedSpeed !== null) {
                 // If cached response was a failure, throw it up the chain
-                if (cachedPostcode.success === false) {
-                    return reject(cachedPostcode.error);
+                if (cachedSpeed.success === false) {
+                    return reject(cachedSpeed.error);
                 }
 
                 // Otherwise serve the cached postcode!
-                return resolve(cachedPostcode.postcode);
+                return resolve(cachedSpeed.speed);
             }
 
-            return self.provider.query(partialAddress)
-                .then(function(postcode){
+            return self.provider.query(postcode)
+                .then(function(speed){
                     self.cache.setItem(cache_key, JSON.stringify({
                         'success': true,
-                        'postcode': postcode
+                        'speed': speed
                     }));
-                    return resolve(postcode);
+                    return resolve(speed);
                 },
                 function(reason){
                     if (reason.cache) {
