@@ -11,8 +11,8 @@ class Listing {
     constructor(srcElem, postcodeResolver, cacheProvider) {
         this.elem = srcElem;
 
-        this.addressElem = this.elem.querySelector('*[itemprop="address"] > *:first-of-type');
-        this.address = this.addressElem.innerText;
+        this.address_elem = this.elem.querySelector('*[itemprop="address"] > *:first-of-type');
+        this.address = this.address_elem.innerText;
 
         this.postcode_resolver = postcodeResolver;
         this.cache = cacheProvider || localStorage;

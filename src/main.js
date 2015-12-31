@@ -58,7 +58,7 @@ function IMUSTADDINTERNETSPEEDSTOZOOPLALISTINGS () {
             speedElement.appendChild(superfastSpeedElement);
 
             // Add to actual page DOM
-            listing.addressElem.appendChild(speedElement);
+            listing.address_elem.appendChild(speedElement);
         });
 
         return true;
