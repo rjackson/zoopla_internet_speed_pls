@@ -67,7 +67,8 @@ class Listing {
         return new Promise(function(resolve, reject) {
             // Resolve partial address into postcode.
             self.postcode_resolver.getFromPartialAddress(self.address).then(
-                function(postcode){
+                function(postcode) {
+                    console.count("Postcode resolved");
                     // Poke Rightmove's API. Have to be x-www-form-urlencoded or it
                     // falls over.
                     axios.post(
@@ -103,6 +104,9 @@ class Listing {
                     function(){
                         return reject('No internet speed data found :((((');
                     });   
+                },
+                function(error) {
+                    console.count("Postcode missed");
                 }
             );  
         });

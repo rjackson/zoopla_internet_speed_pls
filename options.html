@@ -5,11 +5,7 @@
 
 <p>This extension uses the <a href="https://developers.google.com/places/web-service/">Google Places Web Service</a> API. You will need a "Server" API key for this to use this extension.  This API is used to find postcodes for the partial property addresses listed in Zoopla. The postcodes are then used to fetch an internet speed estimate.</p>
 
-<p>A free Google Developer Console account has a quote of 1000 requests per day for Google Maps API usage. The Google Places Web Service has a 10x cost, so each request to this API counts as 10 against the quota. The free limit raises to 150,000 if you give Google your credit card details.</p>
-
-<p>With the free quota, you should be able to view the internet speed estimates for 100 properties (note: properties for which estimates could not be fetched will still be counted against this quota).  This miiiiiiiight be enough for most people, but it wasn't for me (tho I was developing this extension).</p>
-
-<p>Also the extension isn't set up to handle API requests failing due to the quota being exceeded.  It will simply see that it failed to turn a partial address into a postcode (for use in getting the internet estimate), and never try to fetch a postcode for that address again.</p>
+<p>A free Google Developer Console account has a quote of 1000 requests per day for Google Places Web Service API usage. The free limit raises to 150,000 if you give Google your credit card details, but that shouldn't be necessary unless you're developing the extension.  The extension caches results from the API (providing they are valid responses - 'OK' or 'ZERO_RESULTS' from the API), to reduce duplicate API calls.</p>
 
 <label for="google_places_api_key">Google Places API key</label>
 <input type="text" id="google_places_api_key" name="google_places_api_key" value="">

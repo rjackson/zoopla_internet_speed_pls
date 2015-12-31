@@ -6,7 +6,14 @@ function IMUSTADDINTERNETSPEEDSTOZOOPLALISTINGS () {
     // We gon do this through a FANCY PostcodeResolver class and
     // SUPER FANCY dependency injection.
     // I'm a professional code writer person.
-    var postcodeResolver = new PostcodeResolver();
+    var postcodeResolver = new PostcodeResolver(
+        // new GooglePlacesQueryAutocomplete()
+        // new GooglePlacesTextSearch()
+        new ProviderAggregator([
+            new GooglePlacesQueryAutocomplete(),
+            new GooglePlacesTextSearch()
+        ])
+    );
 
      // Get all listings in DOM
      var listingElems = document.querySelectorAll(
