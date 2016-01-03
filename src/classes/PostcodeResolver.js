@@ -18,11 +18,10 @@ class PostcodeResolver {
     getFromPartialAddress(partialAddress) {
         var cache_key = this.cache_key_prefix + partialAddress;
 
-        var self = this;
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
 
             // Fetch cached respnose
-            var cachedPostcode = JSON.parse(self.cache.getItem(cache_key))
+            var cachedPostcode = JSON.parse(this.cache.getItem(cache_key))
             if (cachedPostcode !== null) {
                 // If cached response was a failure, throw it up the chain
                 if (cachedPostcode.success === false) {
@@ -33,23 +32,25 @@ class PostcodeResolver {
                 return resolve(cachedPostcode.postcode);
             }
 
-            return self.provider.query(partialAddress)
-                .then(function(postcode){
-                    self.cache.setItem(cache_key, JSON.stringify({
-                        'success': true,
-                        'postcode': postcode
-                    }));
-                    return resolve(postcode);
-                },
-                function(reason){
-                    if (reason.cache) {
-                        self.cache.setItem(cache_key, JSON.stringify({
-                            'success': false,
-                            'error': reason.error
+            return this.provider.query(partialAddress)
+                .then(
+                    postcode => {
+                        this.cache.setItem(cache_key, JSON.stringify({
+                            'success': true,
+                            'postcode': postcode
                         }));
+                        resolve(postcode);
+                    },
+                    reason => {
+                        if (reason.cache) {
+                            this.cache.setItem(cache_key, JSON.stringify({
+                                'success': false,
+                                'error': reason.error
+                            }));
+                        }
+                        reject(reason.error);
                     }
-                    return reject(reason.error);
-                });
+                );
         });
     }
 }

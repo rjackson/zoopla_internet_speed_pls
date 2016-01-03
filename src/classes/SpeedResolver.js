@@ -18,11 +18,9 @@ class SpeedResolver {
     getFromPostcode(postcode) {
         var cache_key = this.cache_key_prefix + postcode;
 
-        var self = this;
-        return new Promise(function(resolve, reject) {
-
+        return new Promise((resolve, reject) => {
             // Fetch cached respnose
-            var cachedSpeed = JSON.parse(self.cache.getItem(cache_key))
+            var cachedSpeed = JSON.parse(this.cache.getItem(cache_key))
             if (cachedSpeed !== null) {
                 // If cached response was a failure, throw it up the chain
                 if (cachedSpeed.success === false) {
@@ -33,23 +31,25 @@ class SpeedResolver {
                 return resolve(cachedSpeed.speed);
             }
 
-            return self.provider.query(postcode)
-                .then(function(speed){
-                    self.cache.setItem(cache_key, JSON.stringify({
-                        'success': true,
-                        'speed': speed
-                    }));
-                    return resolve(speed);
-                },
-                function(reason){
-                    if (reason.cache) {
-                        self.cache.setItem(cache_key, JSON.stringify({
-                            'success': false,
-                            'error': reason.error
+            return this.provider.query(postcode)
+                .then(
+                    speed => {
+                        this.cache.setItem(cache_key, JSON.stringify({
+                            'success': true,
+                            'speed': speed
                         }));
+                        resolve(speed);
+                    },
+                    reason => {
+                        if (reason.cache) {
+                            this.cache.setItem(cache_key, JSON.stringify({
+                                'success': false,
+                                'error': reason.error
+                            }));
+                        }
+                        reject(reason.error);
                     }
-                    return reject(reason.error);
-                });
+                );
         });
     }
 }

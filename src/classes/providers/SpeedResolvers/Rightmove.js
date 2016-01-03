@@ -10,8 +10,7 @@
      * @return Promise        The promise to provide a speed estimate! Or die trying.
      */
     query(postcode) {
-        var self = this;
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             axios.post(
                 'http://www.rightmove.co.uk/ajax/broadband-speed-result.html',
                 {
@@ -21,7 +20,7 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    transformRequest: [function (data, headers) {
+                    transformRequest: [(data, headers) => {
                         // url-encoded stuff cause we gotta send it
                         // x-www-form-urlencoded. cause rightmove reasons
                         var str = [];
@@ -35,23 +34,21 @@
                         return str.join("&");
                     }]
                 }
-            ).then(function(response){
-                if (response.data.errorMessage !== undefined) {
-                    return reject({
-                        'cache': true,
-                        'error': 'No internet speed data found :(((('
-                    });
-                }
-                
-                // TODO: Map to common API. Tho we only have Rightmove as a provider atm so not important
-                return resolve(response.data);
-            },
-            function(){
-                return reject({
-                    'cache': true,
-                    'error': 'No internet speed data found :(((('
-                });
-            });   
+            )
+                .then(
+                    response => {
+                        if (response.data.errorMessage !== undefined) {
+                            return reject({
+                                'cache': true,
+                                'error': 'No internet speed data found :(((('
+                            });
+                        }
+                        
+                        // TODO: Map to common API. Tho we only have Rightmove as a provider atm so not important
+                        return resolve(response.data);
+                    },
+                    reject
+                );  
         });
     }
 }

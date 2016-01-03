@@ -31,7 +31,7 @@ function IMUSTADDINTERNETSPEEDSTOZOOPLALISTINGS () {
 
      // Cast NodeArray to regular array of Listing objects, because that class
      // has all my fancy logic in it.
-     var listings = Array.prototype.slice.call(listingElems).map(function(elem) {
+     var listings = Array.prototype.slice.call(listingElems).map(elem => {
           return new Listing(elem, postcodeResolver, speedResolver);
      });
 
@@ -39,46 +39,13 @@ function IMUSTADDINTERNETSPEEDSTOZOOPLALISTINGS () {
     // Speeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeed
     // Using filter as a oor man's "for each", to avoiding any beefs with
     // listing being redefined before the 'then' function uses it.
-    listings.filter(function(listing){
-        listing.getSpeed().then(function(speed){
-            // Construct speed DOM to show on page
-            var speedElement = document.createElement('ul')
-            speedElement.style.margin = '0';
-            speedElement.style.padding = '0';
-            speedElement.className = 'ZooplaInternetEstimate';
-
-            var averageSpeedElement = document.createElement('li');
-            averageSpeedElement.style.margin = '0';
-            averageSpeedElement.style.padding = '0';
-            averageSpeedElement.appendChild(
-                document.createTextNode(
-                    'Avg speed: ' + speed.broadbandAverageSpeed + 'Mb/s'
-                )
-            )
-
-            var superfastSpeedElement = document.createElement('li');
-            superfastSpeedElement.style.margin = '0';
-            superfastSpeedElement.style.padding = '0';
-            superfastSpeedElement.appendChild(
-                document.createTextNode(
-                    'Superfast max: ' + speed.superFastMaxSpeedRange + 'Mb/s'
-                )
-            );
-
-            speedElement.appendChild(averageSpeedElement);
-            speedElement.appendChild(superfastSpeedElement);
-
-            // Add to actual page DOM
-            listing.address_elem.appendChild(speedElement);
-        });
-
-        return true;
-     });
-
-}
+    listings.forEach(listing => {
+        listing.render();
+    });
+};
 
 // Verify we have a Google Places API key set
-chrome.storage.sync.get('google_places_api_key', function(config){
+chrome.storage.sync.get('google_places_api_key', config => {
     if (!config.google_places_api_key) {
         console.error("No google places API key set. Boooo");
         return;

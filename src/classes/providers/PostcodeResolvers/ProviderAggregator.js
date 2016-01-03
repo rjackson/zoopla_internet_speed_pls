@@ -16,31 +16,23 @@
      */
     query(query_text, provider_index) {
         var provider_index = provider_index || 0;
-        var self = this;
 
-        return new Promise(function(resolve, reject) {
-            if (provider_index > self.providers.length - 1) {
+        return new Promise((resolve, reject) => {
+            if (provider_index > this.providers.length - 1) {
                 return reject({
                     'cache': true, 
                     'error': 'No providers could resolve a postcode. :('
                 });
             }
 
-            return self.providers[provider_index].query(query_text).then(
-                function(postcode){
-                    return resolve(postcode);
-                },
-                function(reason) {
-                    return self.query(query_text, provider_index + 1).then(
-                        function(postcode){
-                            return resolve(postcode);
-                        },
-                        function(reason) {
-                            return reject(reason);
-                        }
-                    );
-                }
-            ); 
+            return this.providers[provider_index].query(query_text)
+                .then(
+                    resolve,
+                    () => {
+                        this.query(query_text, provider_index + 1)
+                            .then(resolve, reject);
+                    }
+                );
         });
     }
 }
