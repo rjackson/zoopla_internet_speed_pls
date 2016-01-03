@@ -51,9 +51,9 @@
                     'error': 'Could not resolve postcode: No results found.'
                 });
             }
-        });
 
-        return resolve(response);
+            resolve(response);
+        });
     }
 
     extractPostcode(response) {

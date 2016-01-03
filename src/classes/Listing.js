@@ -29,7 +29,6 @@ class Listing {
                 .then(
                     this.speed_resolver.getFromPostcode.bind(this.speed_resolver),
                     (reason) => {
-                        debugger;
                         reject('Can\'t retrieve a speed estimate: No postcode resolved.')
                     }
                 )

@@ -19,9 +19,7 @@ class PostcodeResolver {
         var cache_key = this.cache_key_prefix + partialAddress;
 
         return new Promise((resolve, reject) => {
-
-            // Fetch cached respnose
-            var cachedPostcode = JSON.parse(this.cache.getItem(cache_key))
+            var cachedPostcode = JSON.parse(this.cache.getItem(cache_key));
             if (cachedPostcode !== null) {
                 // If cached response was a failure, throw it up the chain
                 if (cachedPostcode.success === false) {

@@ -20,7 +20,7 @@ class SpeedResolver {
 
         return new Promise((resolve, reject) => {
             // Fetch cached respnose
-            var cachedSpeed = JSON.parse(this.cache.getItem(cache_key))
+            var cachedSpeed = JSON.parse(this.cache.getItem(cache_key));
             if (cachedSpeed !== null) {
                 // If cached response was a failure, throw it up the chain
                 if (cachedSpeed.success === false) {
